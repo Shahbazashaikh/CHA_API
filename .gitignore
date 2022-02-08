@@ -348,3 +348,15 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# CHA_API
+\.vs
+/CHA_API/bin/*
+/CHA_API/obj/*
+/CHA_API.Model/bin/*
+/CHA_API.Model/obj/*
+/CHA_API.Repository/bin/*
+/CHA_API.Repository/obj/*
+/CHA_API.Service/bin/*
+/CHA_API.Service/obj/*
