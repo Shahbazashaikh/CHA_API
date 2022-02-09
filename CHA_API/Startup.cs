@@ -56,8 +56,12 @@ namespace CHA_API
 
             // Repository Layer Dependencies
             services.AddScoped<IWeatherForecastRepository, WeatherforecastRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Service Layer Dependencies
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
         }
 
