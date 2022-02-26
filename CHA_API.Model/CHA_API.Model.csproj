@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Folder Include="MasterModel\" />
 		<Folder Include="PocoModel\" />
 	</ItemGroup>
 
