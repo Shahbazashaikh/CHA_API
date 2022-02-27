@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CHA_API.Model.ExceptionModel;
 using CHA_API.Model.TableModel;
+using CHA_API.Model;
 
 namespace CHA_API.Service
 {
@@ -22,17 +23,20 @@ namespace CHA_API.Service
             _jwtTokenService = jwtTokenService;
         }
 
-        public async Task<string> AuthenticateUser(UserLoginRequest userLoginRequest)
+        public async Task<ResponseModel<string>> AuthenticateUser(UserLoginRequest userLoginRequest)
         {
             try
             {
+                ResponseModel<string> response = new ResponseModel<string>();
                 string token = String.Empty;
                 UserLoginMaster userLogin = await _userRepository.AuthenticateUser(userLoginRequest);
                 if (userLogin != null)
                 {
                     token = await _jwtTokenService.GenerateToken(userLogin.UserName);
                 }
-                return token;
+                response.Data = token;
+                response.IsSuccessful = !string.IsNullOrEmpty(token);
+                return response;
             }
             catch (UnhandledException) { throw; }
             catch (Exception ex)

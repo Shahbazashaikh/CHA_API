@@ -26,12 +26,21 @@ namespace CHA_API.Repository
         {
             try
             {
-                string getConsigneeMasterQuery = string.Empty;
-                if (getConsigneeMasterRequest != null && !string.IsNullOrEmpty(getConsigneeMasterRequest.CompanyName) && !string.IsNullOrEmpty(getConsigneeMasterRequest.CountryCode))
-                    getConsigneeMasterQuery = @"SELECT * FROM dbo.ConsigneeMaster WHERE Name = " + "'" + getConsigneeMasterRequest.CompanyName + "'" +
-                                                " AND CountryCode = " + "'" + getConsigneeMasterRequest.CountryCode + "'";
-                else
-                    getConsigneeMasterQuery = "SELECT * FROM dbo.ConsigneeMaster";
+                string getConsigneeMasterQuery = @"SELECT ID, Name, BranchNo, Address1, Address2, City, State, Country, CountryCode, ZipCode, Remarks
+                                                FROM dbo.ConsigneeMaster";
+                if (getConsigneeMasterRequest != null && (!string.IsNullOrEmpty(getConsigneeMasterRequest.CompanyName)
+                    || !string.IsNullOrEmpty(getConsigneeMasterRequest.CountryCode)))
+                {
+                    getConsigneeMasterQuery += " WHERE ";
+                    if (!string.IsNullOrEmpty(getConsigneeMasterRequest.CompanyName))
+                    {
+                        getConsigneeMasterQuery += "Name = " + "'" + getConsigneeMasterRequest.CompanyName + "'";
+                        getConsigneeMasterQuery += !string.IsNullOrEmpty(getConsigneeMasterRequest.CountryCode) ? " AND " : "";
+                    }
+                    if (!string.IsNullOrEmpty(getConsigneeMasterRequest.CountryCode))
+                        getConsigneeMasterQuery += "Country = " + "'" + getConsigneeMasterRequest.CountryCode + "'";
+                }
+
                 return await _unitOfWork.dbConnection.QueryAsync<ConsigneeMasterResponse>(getConsigneeMasterQuery);
             }
             catch (SqlException ex)

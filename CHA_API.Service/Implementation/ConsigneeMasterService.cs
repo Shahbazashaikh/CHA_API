@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CHA_API.Model.RequestModel;
 using CHA_API.Model.ResponseModel;
 using CHA_API.Model.TableModel;
+using CHA_API.Model;
 
 namespace CHA_API.Service
 {
@@ -23,12 +24,15 @@ namespace CHA_API.Service
             _mapper = mapper;
         }
 
-        public async Task<List<ConsigneeMasterResponse>> GetConsigneeMaster(GetConsigneeMasterRequest getConsigneeMasterRequest)
+        public async Task<ResponseModel<List<ConsigneeMasterResponse>>> GetConsigneeMaster(GetConsigneeMasterRequest getConsigneeMasterRequest)
         {
             try
             {
-                List<ConsigneeMasterResponse> response = new List<ConsigneeMasterResponse>();
-                response = (await _consigneeRepository.GetConsigneeMaster(getConsigneeMasterRequest))?.ToList();
+                ResponseModel<List<ConsigneeMasterResponse>> response = new ResponseModel<List<ConsigneeMasterResponse>>();
+                response.Data = (await _consigneeRepository.GetConsigneeMaster(getConsigneeMasterRequest))?.ToList();
+                response.IsSuccessful = response.Data != null && response.Data.Count > 0;
+                if (response.IsSuccessful == false)
+                    response.Error.ErrorMessage = "Data not found";
                 return response;
             }
             catch (UnhandledException) { throw; }
@@ -38,13 +42,14 @@ namespace CHA_API.Service
             }
         }
 
-        public async Task<string> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
+        public async Task<ResponseModel<string>> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
         {
             try
             {
-                string response = string.Empty;
+                ResponseModel<string> response = new ResponseModel<string>();
                 int id = await _consigneeRepository.InsertConsigneeMaster(_mapper.Map<InsertConsigneeMaster>(consigneeMaster));
-                response = id > 0 ? "Successfully Saved" : "There is some error while saving data";
+                response.Data = id > 0 ? "Successfully Saved" : "There is some error while saving data";
+                response.IsSuccessful = id > 0;
                 return response;
             }
             catch (UnhandledException) { throw; }

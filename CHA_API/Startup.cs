@@ -40,7 +40,11 @@ namespace CHA_API
             services.AddSwaggerGen();
             services.AddCors(option =>
             {
-                option.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                option.AddPolicy("CHACORSPolicy",
+                    options => options.WithOrigins("http://localhost:4200")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader()
+                                      .AllowCredentials());
             });
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -80,7 +84,7 @@ namespace CHA_API
             {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "CHA_API");
             });
-            app.UseCors(option => option.AllowAnyOrigin());
+            app.UseCors("CHACORSPolicy");
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();

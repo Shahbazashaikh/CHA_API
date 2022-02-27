@@ -12,6 +12,6 @@ namespace CHA_API.Model.TableModel
     {
         public int CreatedBy { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

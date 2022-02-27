@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CHA_API.Model;
 
 namespace CHA_API.Service
 {
     public interface IUserService
     {
-        Task<string> AuthenticateUser(UserLoginRequest userLoginRequest);
+        Task<ResponseModel<string>> AuthenticateUser(UserLoginRequest userLoginRequest);
     }
 }
