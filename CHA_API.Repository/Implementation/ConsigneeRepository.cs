@@ -49,15 +49,41 @@ namespace CHA_API.Repository
             }
         }
 
-        public async Task<int> InsertConsigneeMaster(InsertConsigneeMaster ConsigneeMaster)
+        public async Task<int> InsertConsigneeMaster(InsertConsigneeMaster consigneeMaster)
         {
             try
             {
-                return await _unitOfWork.dbConnection.InsertAsync(ConsigneeMaster);
+                return await _unitOfWork.dbConnection.InsertAsync(consigneeMaster);
             }
             catch (SqlException ex)
             {
-                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeRepository", "InsertConsigneeMaster", ConsigneeMaster);
+                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeRepository", "InsertConsigneeMaster", consigneeMaster);
+            }
+        }
+
+        public async Task<bool> UpdateConsigneeMaster(UpdateConsigneeMaster consigneeMaster)
+        {
+            try
+            {
+                return await _unitOfWork.dbConnection.UpdateAsync(consigneeMaster);
+            }
+            catch (SqlException ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeRepository", "UpdateConsigneeMaster", consigneeMaster);
+            }
+        }
+
+        public async Task<bool> DeleteConsigneeMaster(int id)
+        {
+            try
+            {
+                string query = "SELECT * FROM dbo.ConsigneeMaster WHERE ID = " + id.ToString();
+                var entity = await _unitOfWork.dbConnection.QueryAsync(query);
+                return await _unitOfWork.dbConnection.DeleteAsync(entity);
+            }
+            catch (SqlException ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeRepository", "DeleteConsigneeMaster", id);
             }
         }
     }

@@ -13,7 +13,10 @@ namespace CHA_API.Repository
     {
         Task<IEnumerable<ConsigneeMasterResponse>> GetConsigneeMaster(GetConsigneeMasterRequest getConsigneeMasterRequest);
 
-        Task<int> InsertConsigneeMaster(InsertConsigneeMaster ConsigneeMaster);
+        Task<int> InsertConsigneeMaster(InsertConsigneeMaster consigneeMaster);
 
+        Task<bool> UpdateConsigneeMaster(UpdateConsigneeMaster consigneeMaster);
+
+        Task<bool> DeleteConsigneeMaster(int id);
     }
 }

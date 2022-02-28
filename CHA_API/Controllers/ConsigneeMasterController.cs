@@ -35,5 +35,19 @@ namespace CHA_API.Controllers
 
             return Ok(await _consigneeMasterService.InsertConsigneeMaster(consigneeMaster));
         }
+
+        [Route("UpdateConsigneeMaster")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
+        {
+            return Ok(await _consigneeMasterService.UpdateConsigneeMaster(consigneeMaster));
+        }
+
+        [Route("DeleteConsigneeMaster/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteConsigneeMaster(int id)
+        {
+            return Ok(await _consigneeMasterService.DeleteConsigneeMaster(id));
+        }
     }
 }

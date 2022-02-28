@@ -58,5 +58,37 @@ namespace CHA_API.Service
                 throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeMasterService", "InsertConsigneeMaster", consigneeMaster);
             }
         }
+
+        public async Task<ResponseModel<object>> UpdateConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
+        {
+            try
+            {
+                ResponseModel<object> response = new ResponseModel<object>();
+                response.Data = await _consigneeRepository.UpdateConsigneeMaster(_mapper.Map<UpdateConsigneeMaster>(consigneeMaster));
+                response.IsSuccessful = (bool)response.Data;
+                return response;
+            }
+            catch (UnhandledException) { throw; }
+            catch (Exception ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeMasterService", "UpdateConsigneeMaster", consigneeMaster);
+            }
+        }
+
+        public async Task<ResponseModel<object>> DeleteConsigneeMaster(int id)
+        {
+            try
+            {
+                ResponseModel<object> response = new ResponseModel<object>();
+                response.Data = await _consigneeRepository.DeleteConsigneeMaster(id);
+                response.IsSuccessful = (bool)response.Data;
+                return response;
+            }
+            catch (UnhandledException) { throw; }
+            catch (Exception ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ConsigneeMasterService", "DeleteConsigneeMaster", id);
+            }
+        }
     }
 }
