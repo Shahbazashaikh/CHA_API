@@ -16,6 +16,10 @@ namespace CHA_API.Service.MapperProfile
             CreateMap<ConsigneeMasterRequest, InsertConsigneeMaster>()
                 .ForMember(dest => dest.CreatedBy, src => src.MapFrom(s => s.UserId))
                 .ForMember(dest => dest.CreatedDate, src => src.MapFrom(s => DateTime.Now));
+
+            CreateMap<ConsigneeMasterRequest, UpdateConsigneeMaster>()
+                .ForMember(dest => dest.ModifiedBy, src => src.MapFrom(s => s.UserId))
+                .ForMember(dest => dest.ModifiedDate, src => src.MapFrom(s => DateTime.Now));
         }
     }
 }

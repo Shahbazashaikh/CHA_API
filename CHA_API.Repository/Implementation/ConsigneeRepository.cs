@@ -78,8 +78,8 @@ namespace CHA_API.Repository
             try
             {
                 string query = "SELECT * FROM dbo.ConsigneeMaster WHERE ID = " + id.ToString();
-                var entity = await _unitOfWork.dbConnection.QueryAsync(query);
-                return await _unitOfWork.dbConnection.DeleteAsync(entity);
+                UpdateConsigneeMaster entity = await _unitOfWork.dbConnection.QuerySingleAsync<UpdateConsigneeMaster>(query);
+                return await _unitOfWork.dbConnection.DeleteAsync<UpdateConsigneeMaster>(entity);
             }
             catch (SqlException ex)
             {
