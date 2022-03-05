@@ -12,5 +12,7 @@ namespace CHA_API.Model.RequestModel
         public string CompanyName { get; set; }
 
         public string CountryCode { get; set; }
+
+        public string Type { get; set; }
     }
 }

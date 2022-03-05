@@ -36,5 +36,7 @@ namespace CHA_API.Model.RequestModel
         public string Remarks { get; set; }
 
         public int UserId { get; set; }
+
+        public string Type { get; set; }
     }
 }

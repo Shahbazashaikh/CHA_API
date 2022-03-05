@@ -29,5 +29,7 @@ namespace CHA_API.Model.ResponseModel
         public int ZipCode { get; set; }
 
         public string Remarks { get; set; }
+
+        public string Type { get; set; }
     }
 }

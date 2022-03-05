@@ -42,13 +42,13 @@ namespace CHA_API.Service
             }
         }
 
-        public async Task<ResponseModel<string>> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
+        public async Task<ResponseModel<object>> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
         {
             try
             {
-                ResponseModel<string> response = new ResponseModel<string>();
+                ResponseModel<object> response = new ResponseModel<object>();
                 int id = await _consigneeRepository.InsertConsigneeMaster(_mapper.Map<InsertConsigneeMaster>(consigneeMaster));
-                response.Data = id > 0 ? "Successfully Saved" : "There is some error while saving data";
+                response.Data = id > 0;
                 response.IsSuccessful = id > 0;
                 return response;
             }

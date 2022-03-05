@@ -13,7 +13,7 @@ namespace CHA_API.Service
     {
         Task<ResponseModel<List<ConsigneeMasterResponse>>> GetConsigneeMaster(GetConsigneeMasterRequest getConsigneeMasterRequest);
 
-        Task<ResponseModel<string>> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster);
+        Task<ResponseModel<object>> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster);
 
         Task<ResponseModel<object>> UpdateConsigneeMaster(ConsigneeMasterRequest consigneeMaster);
 
