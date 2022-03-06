@@ -1,16 +1,14 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using Serilog;
 using CHA_API.Extensions;
 using CHA_API.Helpers;
 using CHA_API.Model;
-using CHA_API.Repository;
-using CHA_API.Service;
 using CHA_API.Middleware;
 
 namespace CHA_API
@@ -57,20 +55,8 @@ namespace CHA_API
 
             //Logger service
             services.AddSingleton(Log.Logger);
-
-            // Repository Layer Dependencies
-            services.AddScoped<IWeatherForecastRepository, WeatherforecastRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IConsigneeRepository, ConsigneeRepository>();
-            services.AddScoped<IBuyerRepository, BuyerRepository>();
-
-            // Service Layer Dependencies
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IConsigneeMasterService, ConsigneeMasterService>();
-            services.AddScoped<IBuyerMasterServices, BuyerMasterService>();
-            services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+            services.InjectRepositoryLayerDependencies();
+            services.InjectServiceLayerDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

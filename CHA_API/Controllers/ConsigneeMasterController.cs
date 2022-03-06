@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CHA_API.Service;
 using CHA_API.Model.RequestModel;
@@ -32,7 +29,6 @@ namespace CHA_API.Controllers
         [HttpPost]
         public async Task<IActionResult> InsertConsigneeMaster(ConsigneeMasterRequest consigneeMaster)
         {
-
             return Ok(await _consigneeMasterService.InsertConsigneeMaster(consigneeMaster));
         }
 

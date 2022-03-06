@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CHA_API.Model;
 using CHA_API.Model.RequestModel;
 using CHA_API.Model.ResponseModel;
-using CHA_API.Model;
 
 namespace CHA_API.Service
 {
