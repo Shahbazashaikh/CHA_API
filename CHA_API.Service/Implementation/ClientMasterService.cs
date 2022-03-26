@@ -63,26 +63,15 @@ namespace CHA_API.Service
                 {
                     if (client.Addresses != null && client.Addresses.Count > 0)
                     {
-                        foreach (ClientAddressMasterRequest clientAddress in client.Addresses)
+                        client.Addresses.ForEach((address) =>
                         {
-                            clientAddress.ClientId = clientId;
-                        }
-                    }
-                    if (client.Documents != null && client.Documents.Count > 0)
-                    {
-                        foreach (ClientDocumentMasterRequest clientDocument in client.Documents)
-                        {
-                            clientDocument.ClientId = clientId;
-                        }
+                            address.ClientId = clientId;
+                        });
                     }
                     List<InsertClientAddressMaster> addresses = new List<InsertClientAddressMaster>();
                     long addressId = await _clientAddressMasterRepository.InsertClientAddress(_mapper.MapCollection<List<ClientAddressMasterRequest>,
                                                                                                                  List<InsertClientAddressMaster>,
                                                                                                                  ClientAddressMasterMapper>(client.Addresses, addresses));
-                    List<InsertClientDocumentMaster> clientDocuments = new List<InsertClientDocumentMaster>();
-                    long documentId = await _clientDocumentMasterRepository.InserClientDocument(_mapper.MapCollection<List<ClientDocumentMasterRequest>,
-                                                                                                                List<InsertClientDocumentMaster>,
-                                                                                                                ClientDocumentMasterMapper>(client.Documents, clientDocuments));
                 }
                 _unitOfWork.CommitTransaction();
                 response.Data = clientId > 0;
@@ -110,14 +99,14 @@ namespace CHA_API.Service
                 _unitOfWork.BeginTransaction();
                 ResponseModel<object> response = new ResponseModel<object>();
                 response.Data = await _clientMasterRepository.UpdateClient(_mapper.Map<UpdateClientMaster>(client));
-                List<UpdateClientAddressMaster> addresses = new List<UpdateClientAddressMaster>();
-                bool clientAddressUpdated = await _clientAddressMasterRepository.UpdateClientAddress(_mapper.MapCollection<List<ClientAddressMasterRequest>,
-                                                                                                             List<UpdateClientAddressMaster>,
-                                                                                                             ClientAddressMasterMapper>(client.Addresses, addresses));
-                List<UpdateClientDocumentMaster> clientDocuments = new List<UpdateClientDocumentMaster>();
-                bool clientDocumentUpdated = await _clientDocumentMasterRepository.UpdateClientDocument(_mapper.MapCollection<List<ClientDocumentMasterRequest>,
-                                                                                                            List<UpdateClientDocumentMaster>,
-                                                                                                            ClientDocumentMasterMapper>(client.Documents, clientDocuments));
+                //List<UpdateClientAddressMaster> addresses = new List<UpdateClientAddressMaster>();
+                //bool clientAddressUpdated = await _clientAddressMasterRepository.UpdateClientAddress(_mapper.MapCollection<List<ClientAddressMasterRequest>,
+                //                                                                                             List<UpdateClientAddressMaster>,
+                //                                                                                             ClientAddressMasterMapper>(client.Addresses, addresses));
+                //List<UpdateClientDocumentMaster> clientDocuments = new List<UpdateClientDocumentMaster>();
+                //bool clientDocumentUpdated = await _clientDocumentMasterRepository.UpdateClientDocument(_mapper.MapCollection<List<ClientDocumentMasterRequest>,
+                //                                                                                            List<UpdateClientDocumentMaster>,
+                //                                                                                            ClientDocumentMasterMapper>(client.Documents, clientDocuments));
                 _unitOfWork.CommitTransaction();
                 response.IsSuccessful = (bool)response.Data;
                 return response;

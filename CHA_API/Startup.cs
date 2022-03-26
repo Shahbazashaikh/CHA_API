@@ -10,6 +10,7 @@ using CHA_API.Extensions;
 using CHA_API.Helpers;
 using CHA_API.Model;
 using CHA_API.Middleware;
+using System.Reflection;
 
 namespace CHA_API
 {
@@ -33,7 +34,7 @@ namespace CHA_API
         {
             services.AddControllers().AddNewtonsoftJson();
             services.AddHttpClient();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(Assembly.Load("CHA_API.Service"));
             services.Configure<AppSettings>(con => Configuration.GetSection("AppSettings").Bind(con));
             services.AddSwaggerGen();
             services.AddCors(option =>

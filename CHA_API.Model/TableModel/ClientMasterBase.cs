@@ -25,9 +25,9 @@ namespace CHA_API.Model.TableModel
 
         public string TINNo { get; set; }
 
-        public string EXPGSTNTType { get; set; }
+        public string EXPGSTNType { get; set; }
 
-        public string IMPGSTNTType { get; set; }
+        public string IMPGSTNType { get; set; }
 
         public string RegNo { get; set; }
 

@@ -47,6 +47,7 @@ namespace CHA_API.Repository
         {
             try
             {
+                
                 return await _unitOfWork.dbConnection.InsertAsync(client, _unitOfWork.dbTransaction);
             }
             catch (SqlException ex)
