@@ -26,9 +26,9 @@ namespace CHA_API.Controllers
 
         [Route("InsertClient")]
         [HttpPost]
-        public async Task<IActionResult> InsertClient(ClientMasterRequest client)
+        public async Task<IActionResult> InsertClient([FromForm] ClientMasterRequest request)
         {
-            return Ok(await _clientMasterService.InsertClient(client));
+            return Ok(await _clientMasterService.InsertClient(request));
         }
 
         [Route("UpdateClient")]

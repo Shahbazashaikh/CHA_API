@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CHA_API.Model;
 using CHA_API.Model.RequestModel;
 using CHA_API.Model.ResponseModel;
+using Microsoft.AspNetCore.Http;
 
 namespace CHA_API.Service
 {

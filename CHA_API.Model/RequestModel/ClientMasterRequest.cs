@@ -61,7 +61,7 @@ namespace CHA_API.Model.RequestModel
 
         public List<ClientAddressMasterRequest> Addresses { get; set; }
 
-        //public List<ClientDocumentMasterRequest> Documents { get; set; }
+        public List<ClientDocumentMasterRequest> Documents { get; set; }
 
         public int UserId { get; set; }
     }

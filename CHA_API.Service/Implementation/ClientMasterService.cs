@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AutoMapper;
 using CHA_API.Model;
@@ -68,10 +70,23 @@ namespace CHA_API.Service
                             address.ClientId = clientId;
                         });
                     }
+                    if (client.Documents != null && client.Documents.Count > 0)
+                    {
+                        client.Documents.ForEach((document) =>
+                        {
+                            document.ClientId = clientId;
+                            document.ClientName = client.Name;
+                        });
+                    }
                     List<InsertClientAddressMaster> addresses = new List<InsertClientAddressMaster>();
                     long addressId = await _clientAddressMasterRepository.InsertClientAddress(_mapper.MapCollection<List<ClientAddressMasterRequest>,
                                                                                                                  List<InsertClientAddressMaster>,
                                                                                                                  ClientAddressMasterMapper>(client.Addresses, addresses));
+                    UploadDocuments(client.Documents);
+                    List<InsertClientDocumentMaster> documents = new List<InsertClientDocumentMaster>();
+                    long documentId = await _clientDocumentMasterRepository.InserClientDocument(_mapper.MapCollection<List<ClientDocumentMasterRequest>,
+                                                                                                                 List<InsertClientDocumentMaster>,
+                                                                                                                 ClientDocumentMasterMapper>(client.Documents, documents));
                 }
                 _unitOfWork.CommitTransaction();
                 response.Data = clientId > 0;
@@ -149,6 +164,37 @@ namespace CHA_API.Service
                 _unitOfWork.RollbackTransaction();
                 _unitOfWork.Dispose();
                 throw new UnhandledException(ex.Message, ex.InnerException, "ClientMasterService", "DeleteClient", new { clientId });
+            }
+        }
+
+        private void UploadDocuments(List<ClientDocumentMasterRequest> documents)
+        {
+            try
+            {
+                ResponseModel<object> response = new ResponseModel<object>();
+                if (documents != null && documents.Count > 0)
+                {
+                    documents.ForEach((document) =>
+                    {
+                        string pathToSave = Path.Combine("C:\\", document.ClientName);
+                        if (document != null && document.File != null)
+                        {
+                            Directory.CreateDirectory(pathToSave);
+                            string fileName = ContentDispositionHeaderValue.Parse(document.File.ContentDisposition).FileName.Trim('"');
+                            string fullPath = Path.Combine(pathToSave, fileName);
+                            document.DocumentPath = fullPath;
+                            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                document.File.CopyTo(stream);
+                            }
+                        }
+                    });
+                }
+            }
+            catch (UnhandledException) { throw; }
+            catch (Exception ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ClientDocumentMasterService", "UploadDocuments", documents);
             }
         }
     }

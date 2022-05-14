@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AutoMapper;
 using CHA_API.Model;
@@ -10,6 +12,7 @@ using CHA_API.Model.ResponseModel;
 using CHA_API.Model.TableModel;
 using CHA_API.Repository;
 using CHA_API.Service.MapperProfile;
+using Microsoft.AspNetCore.Http;
 
 namespace CHA_API.Service
 {
@@ -49,6 +52,7 @@ namespace CHA_API.Service
             {
                 ResponseModel<object> response = new ResponseModel<object>();
                 List<InsertClientDocumentMaster> clientDocuments = new List<InsertClientDocumentMaster>();
+                UploadDocuments(documents);
                 long documentId = await _clientDocumentMasterRepository.InserClientDocument(_mapper.MapCollection<List<ClientDocumentMasterRequest>,
                                                                                                                  List<InsertClientDocumentMaster>,
                                                                                                                  ClientDocumentMasterMapper>(documents, clientDocuments));
@@ -95,6 +99,36 @@ namespace CHA_API.Service
             catch (Exception ex)
             {
                 throw new UnhandledException(ex.Message, ex.InnerException, "ClientDocumentMasterService", "DeleteClientDocument", new { clientId, documentId });
+            }
+        }
+
+        private void UploadDocuments(List<ClientDocumentMasterRequest> documents)
+        {
+            try
+            {
+                ResponseModel<object> response = new ResponseModel<object>();
+                if (documents != null && documents.Count > 0)
+                {
+                    documents.ForEach((document) =>
+                    {
+                        string pathToSave = Path.Combine("C:\\", document.ClientName);
+                        if (document != null && document.File != null)
+                        {
+                            string fileName = ContentDispositionHeaderValue.Parse(document.File.ContentDisposition).FileName.Trim('"');
+                            string fullPath = Path.Combine(pathToSave, fileName);
+                            document.DocumentPath = fullPath;
+                            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                document.File.CopyTo(stream);
+                            }
+                        }
+                    });
+                }
+            }
+            catch (UnhandledException) { throw; }
+            catch (Exception ex)
+            {
+                throw new UnhandledException(ex.Message, ex.InnerException, "ClientDocumentMasterService", "UploadDocuments", documents);
             }
         }
     }
